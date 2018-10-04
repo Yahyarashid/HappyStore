@@ -10,21 +10,22 @@ $( document ).ready(function() {
     var prodL = []
     var cusL = []
     var catL = []
+    var cart =[]
 
     catL[0] = catF('food',"img/cat/wat.jpg");
     catL[1] = catF('drink',"img/cat/food.jpg");
 
     prodL[0] = prodF("Doritos", 0.9 , "Doritos 100 gm", "hellolemon 500 gmlemon 500 gmlemon 500 gmlemon 500 gm", "img/homepage/pro1.jpeg",0);
 
-    prodL[1] = prodF("Mr.Chips", "0.90 JOD", "Mr.Chips 100 gm","hello lemon 500 gmlemon 500 gmlemon 500 gmlemon 500 gm", "img/homepage/pro2.jpg",1);
+    prodL[1] = prodF("Mr.Chips", 0.90 , "Mr.Chips 100 gm","hello lemon 500 gmlemon 500 gmlemon 500 gmlemon 500 gm", "img/homepage/pro2.jpg",1);
 
-    prodL[2] = prodF("lemon", "4.30 JOD", "lemon 500 gm", "hello lemon 500 gmlemon 500 gmlemon 500 gmlemon 500 gmlemon 500 gm","img/homepage/pro3.jpg",0);
+    prodL[2] = prodF("lemon", 4.30 , "lemon 500 gm", "hello lemon 500 gmlemon 500 gmlemon 500 gmlemon 500 gmlemon 500 gm","img/homepage/pro3.jpg",0);
 
-    prodL[3] = prodF("Banana", "2.00 JOD", "Banana 500 gm", "hello","img/homepage/pro4.jpg",1);
+    prodL[3] = prodF("Banana", 2.00 , "Banana 500 gm", "hello","img/homepage/pro4.jpg",1);
 
-    prodL[4] = prodF("Apple", "3.5 JOD", "Apple 500 gm", "hello","img/homepage/pro5.jpg",0);
+    prodL[4] = prodF("Apple", 3.5 , "Apple 500 gm", "hello","img/homepage/pro5.jpg",0);
 
-    prodL[5] = prodF("Struppary", "5.00 JOD", "Strawbery 500 gm", "hello","img/homepage/strawberries.png",1);
+    prodL[5] = prodF("Struppary", 5.00 , "Strawbery 500 gm", "hello","img/homepage/strawberries.png",1);
 
     cusL[0] = cusF("Name1", "123")
 
@@ -42,7 +43,7 @@ $( document ).ready(function() {
     //console.log($mainContVal)
 
     var $drob ='';
-    $drob = '<div class="form-group">'+'<label for="sel1">Prodects:</label>'
+    $drob = '<div id="Quanty" class="form-group">'+'<label for="sel1">Prodects:</label>'
 	+'<select>'
     for(var i=0;i<=10;i++){
     	$drob+="<option >"+i+"</option>"
@@ -121,7 +122,7 @@ function createProdL(){
 		str += 		'<div class="card" >';
 		str += 			'<img class="card-img-top " src="' + prodL[i].Img + '" alt="Card image cap" >';
 		str += 			'<div class="card-body">' + prodL[i].DescriptionApstrac + '</div>';
-		str += 			'<div class="card-footer">' + prodL[i].Price + '</div>';
+		str += 			'<div class="card-footer">' + prodL[i].Price + 'JOD'+ '</div>';
 
 		str +=		'</div>'
 		str += '</div>'
@@ -144,19 +145,46 @@ function createProd(num){
 	
 	var str='';
 
-	str += '<div class="container col-md-4">';
+	str += '<div class="container ">';
 	str += 		'<h2><a href="#"><span>' +prodL[num].Name +'</span></a></h2>';
 	str += 		'<div class="card" >';
 	str += 			'<img class="card-img-top " src="' + prodL[num].Img + ' " alt="Card image cap" >';
 	str += 			'<div class="card-body">' + prodL[num].DescriptionAll + '</div>';
-	str += 			'<div class="card-footer">' + prodL[num].Price + $drob + '</div>';
+	str += 			'<div class="card-footer">' + prodL[num].Price +'JOD' + $drob + '</div>'+'<button id="b2" pid="'+ num +'">Add to cart</button>'
 	str += 		'</div>'
 	str += '</div>'
-	
+	console.log(str)
 	return str;
 }
 
 
+
+function cartL(){
+	var str = '<div class="container row " >'
+	var sum=0;
+	for(var i = 0; i < cart.length; i++) {
+		
+		str += '<div class="container col-md-4">';
+		str += 		'<h2><a href="#"><span>' + prodL[cart[i][0]].Name + '</span></a></h2>';
+		str += 		'<div class="card" >';
+		
+		str += 			'<div class="card-header">' + prodL[cart[i][0]].Price + '</div>';
+		str += 			'<div class="card-body">' + cart[i][1] + 'Q'+ '</div>';
+		str += 			'<div class="card-footer">' + cart[i][1] * prodL[cart[i][0]].Price  + 'JOD'+ '</div>';
+		sum =sum +cart[i][1] * prodL[cart[i][0]].Price
+
+		str +=		'</div>'
+		str += '</div>'
+		
+	}
+	str += '<div class= " ">' + sum  + 'JOD'+ '</div>';
+	str+='</div>'
+	//str+='</div>'
+
+
+
+	return str;
+}
 
 function searchP(name) {
 	for(var i = 0; i < prodL.length; i++) {
@@ -225,9 +253,41 @@ $('#prodsID').click(function(){
 			$mainContID.html('')
 			$mainContVal.html(createProd(searchP(prodName))); //searchP(prodName)
 			$mainContVal.appendTo($mainContID)
+
+			$('#b2').click(function(){
+				var id= $(this).attr('pid');
+				var val = $('#Quanty :selected').text()
+				cart.push([id,val])
+				console.log(cart);
+			});
 		});
 });
 
+
+$('#cartId').click(function(){
+	alert("CART List")
+	$mainContVal.html(cartL());
+	$mainContID.html('')
+	$mainContVal.appendTo($mainContID)
+	$('#slideID').hide()
+
+		/*$('span').on('click', function(){
+		// alert("Span")
+			var prodName = $(this).text()
+			alert(prodName)
+
+			$mainContID.html('')
+			$mainContVal.html(createProd(searchP(prodName))); //searchP(prodName)
+			$mainContVal.appendTo($mainContID)
+
+			$('#b2').click(function(){
+				var id= $(this).attr('pid');
+				var val = $('#Quanty :selected').text()
+				cart.push([id,val])
+				console.log(cart);
+			});
+		});*/
+});
 
 //////////
 $('#prodID').click(function(){
