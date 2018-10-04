@@ -203,7 +203,7 @@ $('#catID').click(function(){
 			alert(catName)
 
 			$mainContID.html('')
-			$mainContVal.html(createCat(searchC(prodName))); //searchP(prodName)
+			$mainContVal.html(createCat(searchC(catName)));
 			$mainContVal.appendTo($mainContID)
 		});
 });
