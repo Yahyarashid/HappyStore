@@ -17,3 +17,11 @@
 		background-color: #474e5d; /* Dark Blue */
 		color: #ffffff;
 	}
+	#sum{
+		border: solid 3px red;
+		background-image: 
+		color:red; 
+	}
+	#sumv{
+		color:green; 
+	}
